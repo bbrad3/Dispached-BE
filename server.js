@@ -13,6 +13,9 @@ require('dotenv').config()
 const userRouter = require('./routers/userRouter')
 app.use('/user', userRouter)
 
+const locationRouter = require('./routers/locationRouter')
+app.use('/location', locationRouter)
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
