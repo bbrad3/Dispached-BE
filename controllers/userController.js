@@ -99,4 +99,61 @@ userController.verify = async (req, res) => {
     }
 }
 
+userController.getOne = async (req, res) => {
+    try {
+        const decryptedId = jwt.decode(req.headers.authorization, process.env.JWT_SECRET)
+
+        const foundUser = await user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+
+        const encryptedId = jwt.sign({userId: foundUser.id}, process.env.JWT_SECRET)
+
+        if (foundUser) {
+            res.status(200).json({
+                message: 'User profile found',
+                user: {...foundUser.dataValues, id: encryptedId}
+            })
+        } else {
+            res.status(404).json({
+                message: 'User not found'
+            })
+        }
+    } catch (error) {
+        res.status(400).json({
+            message: 'Could not get single user',
+            error
+        })
+    }
+}
+
+userController.update = async (req, res) => {
+    try {
+        const decryptedId = jwt.decode(req.params.userId, process.env.JWT_SECRET)
+
+        const foundUser = await user.findOne({
+            where: {
+                id: decryptedId.userId
+            }
+        })
+        console.log(foundUser.dataValues, req.body); 
+
+        const updatedUser = await foundUser.update(req.body)
+
+        const encryptedId = jwt.sign({userId: updatedUser.id}, process.env.JWT_SECRET)
+
+        res.status(200).json({
+            message: 'User updated',
+            user: {...updatedUser.dataValues, id: encryptedId}
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: 'Could not update single user',
+            error
+        })
+    }
+}
+
 module.exports = userController
