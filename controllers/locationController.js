@@ -30,15 +30,15 @@ locationController.new = async (req, res) => {
 
 locationController.getAll = async (req, res) => {
     try {
-        const foundLocations = await location.findAll()
-
+        const foundLocations = await location.findAll({})
+        console.log('foundLocations', foundLocations);
         res.status(200).json({
             message: 'Here are all locations',
             locations: foundLocations
         })
     } catch (error) {
         res.status(400).json({
-            message: 'Could get locations',
+            message: 'Could not get all locations',
             error
         }) 
     }

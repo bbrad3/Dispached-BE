@@ -16,6 +16,9 @@ app.use('/user', userRouter)
 const locationRouter = require('./routers/locationRouter')
 app.use('/location', locationRouter)
 
+const rideRouter = require('./routers/rideRouter')
+app.use('/ride', rideRouter)
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
