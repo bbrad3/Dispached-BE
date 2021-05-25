@@ -1,5 +1,12 @@
 const express = require('express')
 const app = express()
+const httpServer = require('http').createServer(app)
+const io = require('socket.io')(httpServer, {
+    cors: {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST', 'PUT']
+    }
+})
 
 const routesReport = require('rowdy-logger').begin(app)
 
@@ -22,8 +29,21 @@ app.use('/ride', rideRouter)
 const shiftRouter = require('./routers/shiftRouter')
 app.use('/shift', shiftRouter)
 
+
+io.on('connection', socket => {
+    console.log('io connected')
+
+    socket.on('disconnect', () => {
+        console.log('io disconnected');
+    })
+})
+
 const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
     routesReport.print()
 })
+// app.listen(PORT, () => {
+//     console.log(`App listening on port ${PORT}`);
+//     routesReport.print()
+// })
