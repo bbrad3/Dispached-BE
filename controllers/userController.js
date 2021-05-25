@@ -1,5 +1,5 @@
 const models = require('../models')
-const { user } = models
+const { user, shuttle, shift } = models
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
@@ -101,7 +101,7 @@ userController.verify = async (req, res) => {
 
 userController.getOne = async (req, res) => {
     try {
-        const decryptedId = jwt.decode(req.headers.authorization, process.env.JWT_SECRET)
+        const decryptedId = await jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
 
         const foundUser = await user.findOne({
             where: {

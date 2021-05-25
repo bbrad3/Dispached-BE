@@ -31,7 +31,7 @@ locationController.new = async (req, res) => {
 locationController.getAll = async (req, res) => {
     try {
         const foundLocations = await location.findAll({})
-        console.log('foundLocations', foundLocations);
+        // console.log('foundLocations', foundLocations);
         res.status(200).json({
             message: 'Here are all locations',
             locations: foundLocations

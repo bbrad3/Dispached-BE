@@ -56,4 +56,28 @@ rideController.new = async (req, res) => {
     }
 }
 
+rideController.getAll = async (req, res) => {
+    try {
+        const foundRides = await ride.findAll({
+            include: [{
+                model: location,
+                as: 'pickupLocation'
+            },
+            {
+                model: location,
+                as: 'dropoffLocation'
+            }]
+        })
+
+        res.status(200).json({
+            message: 'Here are all rides',
+            rides: foundRides
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: 'Could not get all rides'
+        })
+    }
+}
+
 module.exports = rideController
