@@ -15,13 +15,13 @@ rideController.new = async (req, res) => {
                 name: req.body.pickup
             }
         })
-        console.log('foundPickup', foundPickup.id, req.body.dropoff);    
+        // console.log('foundPickup', foundPickup.id, req.body.dropoff);    
         const foundDropoff = await location.findOne({
             where: {
                 name: req.body.dropoff
             }
         })
-        console.log('foundDropoff', foundDropoff.id);
+        // console.log('foundDropoff', foundDropoff.id);
         if (foundPickup) {
             pickup = foundPickup.id
         } else {
@@ -32,7 +32,7 @@ rideController.new = async (req, res) => {
         } else {
             dropoffCustom = req.body.dropoff
         }
-        console.log('new ride', pickup, dropoff, pickupCustom, dropoffCustom);
+        // console.log('new ride', pickup, dropoff, pickupCustom, dropoffCustom);
 
         const newRide = await ride.create({
             status: 'pending',
@@ -99,7 +99,7 @@ rideController.assignRide = async (req, res) => {
             shiftId: foundShift.id,
             status: 'assigned'
         })
-        console.log('updatedRide', updatedRide);
+        // console.log('updatedRide', updatedRide);
         res.status(200).json({
             message: 'Ride associated with shift',
             ride: updatedRide

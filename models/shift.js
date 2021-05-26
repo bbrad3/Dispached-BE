@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
+    radio: DataTypes.INTEGER,
     shiftStart: DataTypes.DATE,
     shiftEnd: DataTypes.DATE
   }, {

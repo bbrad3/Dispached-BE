@@ -29,9 +29,11 @@ app.use('/ride', rideRouter)
 const shiftRouter = require('./routers/shiftRouter')
 app.use('/shift', shiftRouter)
 
-
 io.on('connection', socket => {
-    console.log('io connected')
+    console.log('io connected', socket.id)
+    io.on('driver_active', (shift) => {
+        console.log('driver_active shift', shift);
+    })
 
     socket.on('disconnect', () => {
         console.log('io disconnected');
