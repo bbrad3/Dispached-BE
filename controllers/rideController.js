@@ -1,5 +1,5 @@
 const models = require('../models')
-const { ride, location } = models
+const { ride, location, shift } = models
 
 const rideController = {}
 
@@ -15,12 +15,13 @@ rideController.new = async (req, res) => {
                 name: req.body.pickup
             }
         })
+        console.log('foundPickup', foundPickup.id, req.body.dropoff);    
         const foundDropoff = await location.findOne({
             where: {
                 name: req.body.dropoff
             }
         })
-
+        console.log('foundDropoff', foundDropoff.id);
         if (foundPickup) {
             pickup = foundPickup.id
         } else {
@@ -76,6 +77,36 @@ rideController.getAll = async (req, res) => {
     } catch (error) {
         res.status(400).json({
             message: 'Could not get all rides'
+        })
+    }
+}
+
+rideController.assignRide = async (req, res) => {
+    try {
+        console.log(req.params.rideId, req.body.shiftId);
+        const foundRide = await ride.findOne({
+            where: {
+                id: req.params.rideId
+            }
+        })
+        const foundShift = await shift.findOne({
+            where: {
+                id: req.body.shiftId
+            }
+        })
+        // console.log(foundRide.dataValues, foundShift.dataValues);
+        const updatedRide = await foundRide.update({
+            shiftId: foundShift.id,
+            status: 'assigned'
+        })
+        console.log('updatedRide', updatedRide);
+        res.status(200).json({
+            message: 'Ride associated with shift',
+            ride: updatedRide
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: 'Could not assign driver to ride'
         })
     }
 }
