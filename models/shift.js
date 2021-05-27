@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.shift.belongsTo(models.user)
       models.shift.belongsTo(models.shuttle)
+      models.shift.hasMany(models.ride)
     }
   };
   shift.init({

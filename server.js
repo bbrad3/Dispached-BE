@@ -1,12 +1,14 @@
 const express = require('express')
 const app = express()
 const httpServer = require('http').createServer(app)
+require('dotenv').config()
 const io = require('socket.io')(httpServer, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: process.env.FRONT_END_URL, // this needs to be a variable
         methods: ['GET', 'POST', 'PUT']
     }
 })
+const socketIO = require('./controllers/socket_io')
 
 const routesReport = require('rowdy-logger').begin(app)
 
@@ -14,7 +16,6 @@ const routesReport = require('rowdy-logger').begin(app)
 app.use(express.json())
 app.use(require('morgan')('dev'))
 app.use(require('cors')())
-require('dotenv').config()
 
 // ROUTES
 const userRouter = require('./routers/userRouter')
@@ -29,16 +30,7 @@ app.use('/ride', rideRouter)
 const shiftRouter = require('./routers/shiftRouter')
 app.use('/shift', shiftRouter)
 
-io.on('connection', socket => {
-    console.log('io connected', socket.id)
-    io.on('driver_active', (shift) => {
-        console.log('driver_active shift', shift);
-    })
-
-    socket.on('disconnect', () => {
-        console.log('io disconnected');
-    })
-})
+socketIO(io) // this has access to all the on's and emit's
 
 const PORT = process.env.PORT || 3001
 httpServer.listen(PORT, () => {

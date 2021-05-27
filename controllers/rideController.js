@@ -76,7 +76,40 @@ rideController.getAll = async (req, res) => {
         })
     } catch (error) {
         res.status(400).json({
-            message: 'Could not get all rides'
+            message: 'Could not get all rides',
+            error
+        })
+    }
+}
+
+rideController.getDriverRides = async (req, res) => {
+    try {
+        const foundRides = await ride.findAll({
+            where: {
+                shiftId: req.params.shiftId
+            },
+            include: [
+                {
+                    model: location,
+                    as: 'pickupLocation',
+                    required: false
+                },
+                {
+                    model: location,
+                    as: 'dropoffLocation',
+                    required: false
+                }
+            ]
+        })
+
+        res.status(200).json({
+            message: 'Here are the drivers rides',
+            rides: foundRides
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: 'Could not get driver rides',
+            error
         })
     }
 }
