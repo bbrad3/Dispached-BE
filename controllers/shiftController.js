@@ -57,7 +57,7 @@ shiftController.started = async (req, res) => {
                 id: decryptedId.userId
             }
         })
-        // console.log('user', foundUser.dataValues);
+        console.log('user', foundUser.dataValues);
         // console.log('headers', req.headers);
         const encryptedId = await jwt.sign({userId: foundUser.id}, process.env.JWT_SECRET)
 

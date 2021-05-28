@@ -1,5 +1,6 @@
 const models = require('../models')
 const { ride, location, shift } = models
+const { Op } = require("sequelize")
 
 const rideController = {}
 
@@ -59,7 +60,11 @@ rideController.new = async (req, res) => {
 
 rideController.getAll = async (req, res) => {
     try {
+        let today_start = new Date().setHours(0,0,0,0)
         const foundRides = await ride.findAll({
+            where: {
+                createdAt: {[Op.gt]: today_start}
+            },
             include: [{
                 model: location,
                 as: 'pickupLocation'

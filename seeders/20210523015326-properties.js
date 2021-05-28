@@ -76,14 +76,14 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: 'Bronze Tree Condominiums',
+        name: 'Bronze Tree Condos',
         address: '1995 Storm Meadows Dr',
         type: 'property',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        name: 'Kutuk Condominiums',
+        name: 'Kutuk Condos',
         address: '2000 Ski Time Square Dr',
         type: 'property',
         createdAt: new Date(),
